@@ -1,6 +1,7 @@
-import Image from 'next/image';
+'use client';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -42,7 +43,13 @@ export default function Home() {
       </main>
 
       <footer className='bg-4A89C9 py-4 text-center'>
-        <Link href='/contact'>Get in touch</Link>
+        <Button
+          onClick={() => {
+            window.open('mailto:nicolasdesmedt97@gmail.com');
+          }}
+        >
+          Get in touch
+        </Button>
       </footer>
     </div>
   );
