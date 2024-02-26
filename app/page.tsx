@@ -16,9 +16,11 @@ export default function Home() {
             create more.
           </p>
           <p>
-            Currently in Lisbon 🇵🇹 growing an office for{' '}
-            <Link href='https://www.panenco.com'>Panenco</Link> - and happy to
-            meet up!
+            Currently in Lisbon 🇵🇹. Turning my passion for software engineering,
+            AI, entrepreneurship, and people into an impactful company together
+            with an incredibly energizing and talented team. Pioneering
+            AI-enabled customer research at{' '}
+            <Link href='https://www.conveo.ai'>Conveo.ai</Link>
           </p>
         </section>
 
@@ -48,7 +50,7 @@ export default function Home() {
             window.open('mailto:nicolasdesmedt97@gmail.com');
           }}
         >
-          Get in touch
+          Get in touch!
         </Button>
       </footer>
     </div>
