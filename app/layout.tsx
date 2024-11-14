@@ -1,12 +1,12 @@
-import '../styles/globals.css';
-import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
+import { Inter } from 'next/font/google';
+import '../styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Nicolas Desmedt || Software Engineer & People Enthusiast',
   description: `Nicolas Desmedt's portfolio website`,
+  title: 'Nicolas Desmedt || Software Engineer & People Enthusiast',
 };
 
 export default function RootLayout({
