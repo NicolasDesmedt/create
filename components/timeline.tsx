@@ -10,7 +10,7 @@ import {
 import { ChevronDown } from 'lucide-react';
 import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 
-import ImageGallery from './image-gallery';
+import InstagramEmbed from './instagram-embed';
 import SpotifyEmbed from './podcast-embed';
 
 interface TimelineEvent {
@@ -330,7 +330,9 @@ const timelineData: TimelinePeriod[] = [
         title: 'My first podcast appearance!',
       },
       {
-        content: <ImageGallery />,
+        content: (
+          <InstagramEmbed url='https://www.instagram.com/p/C_kKdzHuGdn/?utm_source=ig_embed&amp;utm_campaign=loading' />
+        ),
         date: 'August',
         title: 'Burning Man',
       },
