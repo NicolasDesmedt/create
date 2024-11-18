@@ -1,11 +1,12 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { DialogTitle } from '@radix-ui/react-dialog';
 
 const images = [
   {
@@ -80,7 +81,8 @@ export default function ImageGallery() {
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className='max-w-3xl bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+        <DialogTitle className='sr-only'>Image Gallery</DialogTitle>
+        <DialogContent className='max-w-3xl backdrop-blur'>
           <div className='relative aspect-[3/2] w-full'>
             <Image
               src={images[currentImageIndex].src}
@@ -111,17 +113,6 @@ export default function ImageGallery() {
               <span className='sr-only'>Next image</span>
             </Button>
           </div>
-          <Button
-            variant='outline'
-            size='icon'
-            className='absolute right-4 top-4 h-8 w-8 rounded-full bg-background/80 backdrop-blur'
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          >
-            <X className='h-4 w-4' />
-            <span className='sr-only'>Close dialog</span>
-          </Button>
         </DialogContent>
       </Dialog>
     </div>
