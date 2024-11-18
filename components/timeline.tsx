@@ -11,6 +11,7 @@ import { ChevronDown } from 'lucide-react';
 import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 
 import ImageGallery from './image-gallery';
+import SpotifyEmbed from './podcast-embed';
 
 interface TimelineEvent {
   date: string;
@@ -107,7 +108,7 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, isEven }) => {
           <div
             className={`absolute top-6 ${
               isEven ? '-left-4 -translate-x-1/2' : '-right-4 translate-x-1/2'
-            } h-4 w-4 rotate-45 transform bg-white/80`}
+            } h-4 w-4 rotate-45 transform bg-amber-200/50`}
           ></div>
         </div>
       </motion.div>
@@ -315,10 +316,18 @@ const timelineData: TimelinePeriod[] = [
   {
     events: [
       {
-        content:
-          'Video embeds placeholder for "How to Make Friends" and "Being Adventurous"',
+        content: (
+          <SpotifyEmbed url='https://open.spotify.com/embed/episode/3YuluJlnZ2JtEPRPtrcmwY/video?utm_source=generator' />
+        ),
         date: 'September',
-        title: '2 Podcasts with Natalie',
+        title: 'My second podcast appearance!',
+      },
+      {
+        content: (
+          <SpotifyEmbed url='https://open.spotify.com/embed/episode/3EbtkeU24u4PJumKIIqQPd/video?utm_source=generator' />
+        ),
+        date: 'September',
+        title: 'My first podcast appearance!',
       },
       {
         content: <ImageGallery />,
