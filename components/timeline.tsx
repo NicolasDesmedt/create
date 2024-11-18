@@ -20,28 +20,20 @@ interface TimelineEvent {
 
 interface TimelinePeriod {
   year: number;
-  location: keyof typeof cityBackgrounds;
+  location: keyof typeof cityColors;
   events: TimelineEvent[];
 }
 
 interface TimelineEventProps {
   event: TimelineEvent;
   isEven: boolean;
-  location: keyof typeof cityBackgrounds;
+  location: keyof typeof cityColors;
 }
 
 interface ParallaxSectionProps {
   children: React.ReactNode;
 }
 
-const cityBackgrounds = {
-  Belgium: 'antwerp-skyline',
-  Lisbon: 'lx-skyline',
-  'New York City': 'nyc-skyline',
-  'San Francisco': 'sf-skyline',
-} as const;
-
-// Update cityColors to be a const assertion for better type inference
 const cityColors = {
   Belgium: 'from-black via-yellow-500 to-red-500', // Black, yellow, and red to represent the Belgian flag
   Lisbon: 'from-blue-500 via-teal-400 to-orange-300', // Ocean blue to vibrant terracotta, evoking Lisbon's coastal vibe
@@ -214,16 +206,6 @@ const Timeline: React.FC = () => {
               );
             })}
           </div>
-          {/* <CldImage
-                width='1920'
-                height={totalHeight}
-                src={cityBackgrounds[currentLocation]}
-                sizes='100vw'
-                priority
-                className='absolute left-1/2 h-full w-40 -translate-x-1/2 transform object-cover'
-                alt={`${currentLocation} background`}
-                style={{ WebkitMask: 'url(#pathMask)', mask: 'url(#pathMask)' }}
-              /> */}
           {timelineData.map((period, periodIndex) => (
             <ParallaxSection
               key={`${period.year}-${period.location}-${periodIndex}`}
