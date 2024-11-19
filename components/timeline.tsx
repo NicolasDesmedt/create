@@ -14,26 +14,25 @@ const InstagramEmbed = dynamic(() => import('./instagram-embed'), {
 interface TimelineEvent {
   date: string;
   title: string;
+  location: string;
   content: React.ReactNode;
 }
 
 interface TimelinePeriod {
-  year: number;
-  location: keyof typeof cityColors;
+  year: keyof typeof yearColors;
   events: TimelineEvent[];
 }
 
 interface TimelineEventProps {
   event: TimelineEvent;
   isEven: boolean;
-  location: keyof typeof cityColors;
 }
 
-const cityColors = {
-  Belgium: 'from-black via-yellow-500 to-red-500', // Black, yellow, and red to represent the Belgian flag
-  Lisbon: 'from-blue-500 via-teal-400 to-orange-300', // Ocean blue to vibrant terracotta, evoking Lisbon's coastal vibe
-  'New York City': 'from-gray-700 via-slate-500 to-blue-600', // Urban grays and blues to capture NYC's skyscrapers and sky
-  'San Francisco': 'from-cyan-200 via-gray-300 to-orange-400', // Soft foggy cyan to sunset orange, echoing SF’s iconic sunsets
+const yearColors = {
+  2020: 'from-black via-yellow-500 to-red-500', // Black, yellow, and red to represent the Belgian flag
+  2022: 'from-blue-500 via-teal-400 to-orange-300', // Ocean blue to vibrant terracotta, evoking Lisbon's coastal vibe
+  2023: 'from-green-700 via-red-500 to-amber-600', // Soft foggy cyan to sunset orange, echoing SF’s iconic sunsets
+  2024: 'from-cyan-200 via-gray-300 to-orange-400', // Urban grays and blues to capture NYC's skyscrapers and sky
 } as const;
 
 const createPath = (height: number) => {
@@ -88,7 +87,6 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, isEven }) => {
       >
         <div className='relative transform rounded-lg bg-white/80 p-6 shadow-lg backdrop-blur-sm transition-all duration-300 hover:rotate-1 hover:scale-105'>
           <div className='mb-2 flex items-center'>
-            <div className='mr-2 h-3 w-3 rounded-full bg-current'></div>
             <h4 className='font-mono text-lg font-semibold'>{event.date}</h4>
           </div>
           <h3 className='mb-2 font-serif text-xl font-bold'>{event.title}</h3>
@@ -110,7 +108,24 @@ const svgPath = createPath(10000);
 
 const Timeline: React.FC = () => {
   const [isNavVisible, setIsNavVisible] = useState(false);
+  const [isAtBottom, setIsAtBottom] = useState(false);
   const timelineRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const bottom =
+        Math.ceil(window.innerHeight + window.scrollY) >=
+        document.documentElement.scrollHeight;
+      setIsAtBottom(bottom);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const scrollToYear = (year: number) => {
     const yearElement = document.getElementById(`year-${year}`);
@@ -121,7 +136,7 @@ const Timeline: React.FC = () => {
 
   return (
     <div className='relative min-h-screen bg-white'>
-      <div className='container relative mx-auto overflow-hidden px-6 py-10'>
+      <div className='container relative mx-auto overflow-hidden px-6 pt-10'>
         <h2 className='mb-24 text-center font-serif text-5xl font-bold italic'>
           My Journey
         </h2>
@@ -151,7 +166,7 @@ const Timeline: React.FC = () => {
 
           {timelineData.map((period, periodIndex) => (
             <div
-              key={`${period.year}-${period.location}-${periodIndex}`}
+              key={`${period.year}-${periodIndex}`}
               className='pb-32'
               id={`year-${period.year}-${periodIndex}`}
             >
@@ -173,35 +188,36 @@ const Timeline: React.FC = () => {
                 }}
                 viewport={{ amount: 0.8, once: true }}
               >
-                <div
-                  className={`${cityColors[period.location]} bg-gradient-to-r px-4 py-2 text-center shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-105`}
-                  style={{
-                    clipPath: 'polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)',
-                    width: '150px',
-                  }}
-                >
-                  <span className='font-mono text-lg font-bold text-white'>
-                    {period.year}
-                  </span>
+                <div className='group relative'>
+                  <div
+                    className={`relative z-10 ${yearColors[period.year]} bg-gradient-to-r px-8 py-3 shadow-lg backdrop-blur-sm transition-all duration-300 before:absolute before:-left-6 before:top-0 before:h-full before:w-6 before:skew-x-[15deg] before:bg-inherit after:absolute after:-right-6 after:top-0 after:h-full after:w-6 after:-skew-x-[15deg] after:bg-inherit group-hover:scale-110 group-hover:shadow-2xl`}
+                  >
+                    <div className='absolute inset-0 bg-white/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+                    <span className='relative z-10 font-mono text-2xl font-bold tracking-wider text-white'>
+                      {period.year}
+                    </span>
+                  </div>
+
+                  <div className='absolute -bottom-1 -left-2 -right-2 h-1/2 skew-x-12 transform bg-black/20 blur-sm' />
                 </div>
               </motion.div>
 
-              {/* Events */}
               <div className='space-y-16'>
                 {period.events.map((event, eventIndex) => (
                   <TimelineEvent
                     key={`${event.date}-${event.title}`}
                     event={event}
                     isEven={(periodIndex + eventIndex) % 2 === 0}
-                    location={period.location}
                   />
                 ))}
               </div>
             </div>
           ))}
         </div>
-        <div className='absolute bottom-0 left-1/2 -translate-x-1/2 transform animate-bounce'>
-          <ChevronDown className='h-8 w-8 text-gray-700' />
+        <div
+          className={`fixed bottom-0 left-1/2 -translate-x-1/2 transform transition-all duration-300 ${isAtBottom ? 'pointer-events-none opacity-0' : 'opacity-100'} `}
+        >
+          <ChevronDown className='h-8 w-8 animate-bounce text-gray-700' />
         </div>
         <div
           className={`fixed right-0 top-0 h-full w-12 bg-gray-200 transition-all duration-300 ${
@@ -248,117 +264,110 @@ const timelineData: TimelinePeriod[] = [
     events: [
       {
         content: 'Embedded video podcast placeholder',
-        date: 'October',
+        date: '🇵🇹 October',
+        location: 'Lisbon',
         title: 'Podcast on my founder story with Emiliano',
       },
-    ],
-    location: 'Lisbon',
-    year: 2024,
-  },
-  {
-    events: [
       {
         content: (
           <SpotifyEmbed url='https://open.spotify.com/embed/episode/3YuluJlnZ2JtEPRPtrcmwY/video?utm_source=generator' />
         ),
-        date: 'September',
+        date: '🌉 September',
+        location: 'San Francisco',
         title: 'My second podcast appearance!',
       },
       {
         content: (
           <SpotifyEmbed url='https://open.spotify.com/embed/episode/3EbtkeU24u4PJumKIIqQPd/video?utm_source=generator' />
         ),
-        date: 'September',
+        date: '🌉 September',
+        location: 'San Francisco',
         title: 'My first podcast appearance!',
       },
       {
         content: (
           <InstagramEmbed url='https://www.instagram.com/p/C_kKdzHuGdn/?utm_source=ig_embed&amp;utm_campaign=loading' />
         ),
-        date: 'August',
+        date: '🌉 August',
+        location: 'San Francisco',
         title: 'Burning Man',
       },
       {
         content: '',
-        date: 'August',
+        date: '🌉 August',
+        location: 'San Francisco',
         title: 'Split with Conveo',
       },
       {
         content: 'Picture of me and the team placeholder',
-        date: 'July',
+        date: '🌉 July',
+        location: 'San Francisco',
         title: 'Start of Y Combinator S24 in San Francisco',
       },
-    ],
-    location: 'San Francisco',
-    year: 2024,
-  },
-  {
-    events: [
       {
         content: '',
-        date: 'May',
+        date: '🇵🇹 May',
+        location: 'Portugal',
         title: 'Accepted into Y Combinator!',
       },
       {
         content: '',
-        date: 'March',
+        date: '🇧🇪 March',
+        location: 'Belgium',
         title: 'Onboarded Dieter as new CTO',
       },
       {
         content: '',
-        date: 'January',
+        date: '🇧🇪 January',
+        location: 'Belgium',
         title: 'Co-founded Conveo.ai with Hendrik and Ben',
       },
     ],
-    location: 'Lisbon',
     year: 2024,
   },
   {
     events: [
       {
         content: '',
-        date: 'April',
+        date: '🇵🇹 April',
+        location: 'Lisbon',
         title: 'Moved to Lisbon',
       },
     ],
-    location: 'Lisbon',
     year: 2023,
   },
   {
     events: [
       {
         content: 'Blog highlight placeholder',
-        date: 'December',
-        title: 'Growing Professionally and Personally in NYC',
-      },
-      {
-        content: '',
-        date: 'August',
+        date: '🗽 August',
+        location: 'New York City',
         title: 'Back to Belgium (but with a promise to return one day)',
       },
       {
         content: 'Pictures placeholder',
-        date: 'May',
+        date: '🗽 May',
+        location: 'New York City',
         title: 'Moved to New York City for Business Development at Panenco',
       },
     ],
-    location: 'New York City',
     year: 2022,
   },
   {
     events: [
       {
         content: '',
-        date: 'September',
+        date: '🇧🇪 September',
+        location: 'Belgium',
         title: 'Started at Panenco',
       },
       {
         content: 'Highlight of published paper placeholder',
-        date: 'June',
+        date: '🇧🇪 June',
+        location: 'Belgium',
         title: 'Graduated MEng in Computer Science',
       },
     ],
-    location: 'Belgium',
     year: 2020,
   },
 ];
