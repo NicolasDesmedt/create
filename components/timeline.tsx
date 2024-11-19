@@ -116,7 +116,7 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, isEven }) => {
   );
 };
 
-const svgPath = createPath(10000);
+const svgPath = createPath(9000);
 
 const Timeline: React.FC = () => {
   const [isNavVisible, setIsNavVisible] = useState(false);
