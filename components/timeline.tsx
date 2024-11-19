@@ -291,7 +291,7 @@ const timelineData: TimelinePeriod[] = [
         content: 'Embedded video podcast placeholder',
         date: '🇵🇹 October',
         location: 'Lisbon',
-        title: 'Podcast on my founder story with Emiliano',
+        title: 'My founder story with Emiliano',
       },
       {
         content: (
@@ -307,7 +307,7 @@ const timelineData: TimelinePeriod[] = [
         ),
         date: '🌉 September',
         location: 'San Francisco',
-        title: 'My first podcast appearance!',
+        title: 'My first podcast appearance (get to know me!)',
       },
       {
         content: (
@@ -315,7 +315,8 @@ const timelineData: TimelinePeriod[] = [
         ),
         date: '🌉 August',
         location: 'San Francisco',
-        title: 'Burning Man',
+        title:
+          'Burning Man - where my love for dance, people and self-expression was set ablaze',
       },
       {
         content: (
@@ -369,7 +370,7 @@ const timelineData: TimelinePeriod[] = [
         ),
         date: '🇵🇹 April',
         location: 'Lisbon',
-        title: 'Moved to Lisbon',
+        title: 'Moved to Lisbon, pursuing growth',
       },
     ],
     year: 2023,
@@ -407,7 +408,7 @@ const timelineData: TimelinePeriod[] = [
         ),
         date: '🇧🇪 September',
         location: 'Belgium',
-        title: 'Started at Panenco',
+        title: 'Started as a Full-Stack Software Engineer at Panenco',
       },
       {
         content: (
