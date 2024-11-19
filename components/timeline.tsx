@@ -402,7 +402,9 @@ const timelineData: TimelinePeriod[] = [
   {
     events: [
       {
-        content: '',
+        content: (
+          <ImageGallery images={[{ alt: 'Panenco', src: 'create/panenco' }]} />
+        ),
         date: '🇧🇪 September',
         location: 'Belgium',
         title: 'Started at Panenco',
