@@ -206,7 +206,7 @@ const Timeline: React.FC = () => {
               >
                 <div className='group relative'>
                   <div
-                    className={`relative z-10 ${yearColors[period.year]} bg-gradient-to-r px-8 py-3 shadow-lg backdrop-blur-sm transition-all duration-300 before:absolute before:-left-6 before:top-0 before:h-full before:w-6 before:skew-x-[15deg] before:bg-inherit after:absolute after:-right-6 after:top-0 after:h-full after:w-6 after:-skew-x-[15deg] after:bg-inherit group-hover:scale-110 group-hover:shadow-2xl`}
+                    className={`relative z-10 rounded-lg ${yearColors[period.year]} bg-gradient-to-r px-8 py-3 shadow-lg backdrop-blur-sm transition-all duration-300 before:absolute before:-left-6 before:top-0 before:h-full before:w-6 before:skew-x-[15deg] before:bg-inherit after:absolute after:-right-6 after:top-0 after:h-full after:w-6 after:-skew-x-[15deg] after:bg-inherit group-hover:scale-110 group-hover:shadow-2xl`}
                   >
                     <div className='absolute inset-0 bg-white/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
                     <span className='relative z-10 font-mono text-2xl font-bold tracking-wider text-white'>
