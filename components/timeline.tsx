@@ -85,7 +85,7 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, isEven }) => {
         ref={ref}
         initial='hidden'
         animate={controls}
-        style={{ width: 'calc(50% - 2.5rem)' }}
+        className='w-[calc(100%-2rem)] md:w-[calc(50%-2.5rem)]'
         variants={{
           hidden: { opacity: 0, x: isEven ? 50 : -50 },
           visible: {
