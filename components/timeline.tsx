@@ -5,6 +5,7 @@ import { ChevronDown } from 'lucide-react';
 import { RefObject, useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
+import ImageGallery from './image-gallery';
 import SpotifyEmbed from './podcast-embed';
 
 const InstagramEmbed = dynamic(() => import('./instagram-embed'), {
@@ -135,7 +136,7 @@ const Timeline: React.FC = () => {
   };
 
   return (
-    <div className='relative min-h-screen bg-white'>
+    <div className='relative min-h-screen bg-neutral-50/40'>
       <div className='container relative mx-auto overflow-hidden px-6 pt-10'>
         <h2 className='mb-24 text-center font-serif text-5xl font-bold italic'>
           My Journey
@@ -299,13 +300,31 @@ const timelineData: TimelinePeriod[] = [
         title: 'Split with Conveo',
       },
       {
-        content: 'Picture of me and the team placeholder',
+        content: (
+          <ImageGallery
+            images={[
+              {
+                alt: 'Conveo in San Francisco',
+                src: 'create/conveo-in-sf',
+              },
+            ]}
+          />
+        ),
         date: '🌉 July',
         location: 'San Francisco',
         title: 'Start of Y Combinator S24 in San Francisco',
       },
       {
-        content: '',
+        content: (
+          <ImageGallery
+            images={[
+              {
+                alt: 'Accepted into Y Combinator',
+                src: 'create/accepted-into-yc',
+              },
+            ]}
+          />
+        ),
         date: '🇵🇹 May',
         location: 'Portugal',
         title: 'Accepted into Y Combinator!',
@@ -328,7 +347,9 @@ const timelineData: TimelinePeriod[] = [
   {
     events: [
       {
-        content: '',
+        content: (
+          <InstagramEmbed url='https://www.instagram.com/p/CtJtAQ9tHjn/?utm_source=ig_embed&amp;utm_campaign=loading' />
+        ),
         date: '🇵🇹 April',
         location: 'Lisbon',
         title: 'Moved to Lisbon',

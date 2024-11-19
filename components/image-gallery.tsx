@@ -1,29 +1,21 @@
 'use client';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Image from 'next/image';
+import { CldImage } from 'next-cloudinary';
 import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { DialogTitle } from '@radix-ui/react-dialog';
 
-const images = [
-  {
-    alt: 'Two scuba divers exploring clear blue waters with coral reef visible on the right',
-    src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202021-08-02%20at%2018.22.07-HPLQdO30MSNoXI4E5HJNhdt1ENLB3W.jpeg',
-  },
-  {
-    alt: 'Scuba diver near a coral reef wall in crystal clear blue water',
-    src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202021-08-02%20at%2018.23.13-ljUMcQjJdHTKjtQGjZmSSsZKHpqtyq.jpeg',
-  },
-  {
-    alt: 'Two scuba divers at different depths exploring rocky seafloor',
-    src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202021-08-02%20at%2018.23.11-PVnHkM9JQ2xOhttxOUcw6cb7wipKge.jpeg',
-  },
-];
+interface ImageGalleryProps {
+  images: {
+    alt: string;
+    src: string;
+  }[];
+}
 
-export default function ImageGallery() {
+export default function ImageGallery({ images }: ImageGalleryProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
 
@@ -57,6 +49,45 @@ export default function ImageGallery() {
     };
   }, [handleKeyDown]);
 
+  if (images.length === 0) return null;
+
+  if (images.length === 1) {
+    return (
+      <div>
+        <button
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          className='relative aspect-square w-full overflow-hidden rounded-lg transition-opacity hover:opacity-90'
+        >
+          <CldImage
+            src={images[0].src}
+            alt={images[0].alt}
+            className='object-cover'
+            fill
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+          />
+        </button>
+
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogTitle className='sr-only'>Image View</DialogTitle>
+          <DialogContent className='max-w-3xl backdrop-blur'>
+            <div className='relative aspect-[3/2] w-full'>
+              <CldImage
+                src={images[0].src}
+                alt={images[0].alt}
+                className='object-contain'
+                fill
+                priority
+                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className='grid grid-cols-3 gap-2'>
@@ -69,7 +100,7 @@ export default function ImageGallery() {
             }}
             className='relative aspect-square overflow-hidden rounded-lg transition-opacity hover:opacity-90'
           >
-            <Image
+            <CldImage
               src={image.src}
               alt={image.alt}
               className='object-cover'
@@ -84,7 +115,7 @@ export default function ImageGallery() {
         <DialogTitle className='sr-only'>Image Gallery</DialogTitle>
         <DialogContent className='max-w-3xl backdrop-blur'>
           <div className='relative aspect-[3/2] w-full'>
-            <Image
+            <CldImage
               src={images[currentImageIndex].src}
               alt={images[currentImageIndex].alt}
               className='object-contain'
