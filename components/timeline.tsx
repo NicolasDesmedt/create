@@ -6,7 +6,16 @@ import { RefObject, useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 import ImageGallery from './image-gallery';
+import MetaImageLink from './meta-image-link';
 import SpotifyEmbed from './podcast-embed';
+import YoutubeEmbed from './youtube-embed';
+
+const EmbeddedLinkedInArticle = dynamic(
+  () => import('./embedded-linkedin-article'),
+  {
+    ssr: false,
+  }
+);
 
 const InstagramEmbed = dynamic(() => import('./instagram-embed'), {
   ssr: false,
@@ -275,7 +284,7 @@ const timelineData: TimelinePeriod[] = [
         ),
         date: '🌉 September',
         location: 'San Francisco',
-        title: 'My second podcast appearance!',
+        title: 'Getting the podcast bug w Natalie',
       },
       {
         content: (
@@ -292,12 +301,6 @@ const timelineData: TimelinePeriod[] = [
         date: '🌉 August',
         location: 'San Francisco',
         title: 'Burning Man',
-      },
-      {
-        content: '',
-        date: '🌉 August',
-        location: 'San Francisco',
-        title: 'Split with Conveo',
       },
       {
         content: (
@@ -330,13 +333,12 @@ const timelineData: TimelinePeriod[] = [
         title: 'Accepted into Y Combinator!',
       },
       {
-        content: '',
-        date: '🇧🇪 March',
-        location: 'Belgium',
-        title: 'Onboarded Dieter as new CTO',
-      },
-      {
-        content: '',
+        content: (
+          <YoutubeEmbed
+            url='https://www.youtube.com/embed/XNbHpJ6vVBQ?si=R5QSbvvsgZY7ikUo'
+            title='Co-founded Conveo.ai with Hendrik and Ben'
+          />
+        ),
         date: '🇧🇪 January',
         location: 'Belgium',
         title: 'Co-founded Conveo.ai with Hendrik and Ben',
@@ -360,7 +362,13 @@ const timelineData: TimelinePeriod[] = [
   {
     events: [
       {
-        content: 'Blog highlight placeholder',
+        content: (
+          <EmbeddedLinkedInArticle
+            title='Life in the Fast Lane: Growing Professionally and Personally in NYC'
+            url='https://www.linkedin.com/pulse/life-fast-lane-growing-professionally-personally-nyc-nicolas-desmedt/'
+            imageUrl='/create/nyc-blog-cover'
+          />
+        ),
         date: '🗽 August',
         location: 'New York City',
         title: 'Back to Belgium (but with a promise to return one day)',
@@ -383,7 +391,13 @@ const timelineData: TimelinePeriod[] = [
         title: 'Started at Panenco',
       },
       {
-        content: 'Highlight of published paper placeholder',
+        content: (
+          <MetaImageLink
+            url='https://www.sciencedirect.com/science/article/pii/S221282712100531X#!'
+            title='Paper: Active Preference Learning in Product Design Decisions'
+            imageUrl='/create/active-preference-learning'
+          />
+        ),
         date: '🇧🇪 June',
         location: 'Belgium',
         title: 'Graduated MEng in Computer Science',
