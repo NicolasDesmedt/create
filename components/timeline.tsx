@@ -95,13 +95,15 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, isEven }) => {
           },
         }}
       >
-        <div className='relative transform rounded-lg bg-white/80 p-2 shadow-lg backdrop-blur-sm transition-all duration-300 hover:rotate-1 hover:scale-105 md:p-6'>
+        <div className='relative transform rounded-lg bg-white/80 p-6 shadow-lg backdrop-blur-sm transition-all duration-300 hover:rotate-1 hover:scale-105'>
           <div className='mb-2 flex items-center'>
             <h4 className='font-mono text-lg font-semibold'>{event.date}</h4>
           </div>
           <h3 className='mb-2 font-serif text-xl font-bold'>{event.title}</h3>
           {event.content && (
-            <div className='mt-2 rounded bg-white/50 p-4'>{event.content}</div>
+            <div className='mt-6 rounded bg-white/50 md:mt-2 md:p-4'>
+              {event.content}
+            </div>
           )}
           <div
             className={`absolute top-6 ${
