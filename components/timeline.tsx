@@ -233,11 +233,17 @@ const Timeline: React.FC = () => {
             </div>
           ))}
         </div>
-        <div
+        <button
+          onClick={() => {
+            window.scrollTo({
+              behavior: 'smooth',
+              top: document.documentElement.scrollHeight,
+            });
+          }}
           className={`fixed bottom-0 left-1/2 -translate-x-1/2 transform transition-all duration-300 ${isAtBottom ? 'pointer-events-none opacity-0' : 'opacity-100'} `}
         >
           <ChevronDown className='h-8 w-8 animate-bounce text-gray-700' />
-        </div>
+        </button>
         <div
           className={`fixed right-0 top-0 h-full w-12 bg-gray-200 transition-all duration-300 ${
             isNavVisible ? 'opacity-100' : 'opacity-0'
