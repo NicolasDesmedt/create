@@ -1,14 +1,8 @@
 'use client';
 
-import {
-  motion,
-  useAnimation,
-  useInView,
-  useScroll,
-  useTransform,
-} from 'framer-motion';
+import { motion, useAnimation, useInView } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 import SpotifyEmbed from './podcast-embed';
@@ -33,10 +27,6 @@ interface TimelineEventProps {
   event: TimelineEvent;
   isEven: boolean;
   location: keyof typeof cityColors;
-}
-
-interface ParallaxSectionProps {
-  children: React.ReactNode;
 }
 
 const cityColors = {
@@ -81,11 +71,7 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, isEven }) => {
   }, [isInView, controls]);
 
   return (
-    <div
-      className={`relative z-10 mb-8 flex ${
-        isEven ? 'justify-end' : 'justify-start'
-      } w-full`}
-    >
+    <div className={`flex ${isEven ? 'justify-end' : 'justify-start'} w-full`}>
       <motion.div
         ref={ref}
         initial='hidden'
@@ -120,29 +106,7 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, isEven }) => {
   );
 };
 
-const ParallaxSection: React.FC<ParallaxSectionProps> = ({ children }) => {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    offset: ['start end', 'end start'],
-    target: ref as RefObject<HTMLElement>,
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
-
-  return (
-    <div className='relative'>
-      <motion.div ref={ref} style={{ y }}>
-        {children}
-      </motion.div>
-    </div>
-  );
-};
-
-const estimatedCardHeight = 280;
-const verticalSpacing = 150;
-
-const calculatePeriodHeight = (period: TimelinePeriod) => {
-  return period.events.length * estimatedCardHeight + verticalSpacing;
-};
+const svgPath = createPath(10000);
 
 const Timeline: React.FC = () => {
   const [isNavVisible, setIsNavVisible] = useState(false);
@@ -155,35 +119,20 @@ const Timeline: React.FC = () => {
     }
   };
 
-  const totalHeight = useMemo(
-    () =>
-      timelineData.reduce(
-        (total, period) => total + calculatePeriodHeight(period),
-        0
-      ),
-    [timelineData]
-  );
-
-  const svgPath = useMemo(() => createPath(totalHeight), [totalHeight]);
-
   return (
     <div className='relative min-h-screen bg-white'>
-      <div className='container relative z-20 mx-auto overflow-hidden px-6 py-10'>
+      <div className='container relative mx-auto overflow-hidden px-6 py-10'>
         <h2 className='mb-24 text-center font-serif text-5xl font-bold italic'>
           My Journey
         </h2>
-        <div
-          className='relative'
-          ref={timelineRef}
-          style={{ height: `${totalHeight}px` }}
-        >
+        <div className='relative' ref={timelineRef}>
           <svg className='absolute' preserveAspectRatio='none'>
             <defs>
               <mask id='pathMask'>
                 <motion.path
                   d={svgPath}
                   stroke='white'
-                  strokeWidth='50'
+                  strokeWidth='40'
                   fill='none'
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -193,63 +142,52 @@ const Timeline: React.FC = () => {
             </defs>
           </svg>
           <div
-            className={`absolute left-1/2 h-full w-40 -translate-x-1/2 transform bg-gradient-to-r`}
-            style={{ WebkitMask: 'url(#pathMask)', mask: 'url(#pathMask)' }}
-          >
-            {timelineData.map((period, periodIndex) => {
-              const periodHeight = calculatePeriodHeight(period);
+            className={`absolute left-1/2 flex h-full w-40 -translate-x-1/2 transform bg-gradient-to-br from-blue-500/40 to-amber-800/40`}
+            style={{
+              WebkitMask: 'url(#pathMask)',
+              mask: 'url(#pathMask)',
+            }}
+          />
 
-              return (
-                <div
-                  key={`${period.year}-${period.location}-${periodIndex}`}
-                  className={`absolute w-full bg-gradient-to-r ${cityColors[period.location]}`}
-                  style={{
-                    height: `${periodHeight}px`,
-                    top: `${PERIOD_POSITIONS[periodIndex]}px`,
-                  }}
-                />
-              );
-            })}
-          </div>
           {timelineData.map((period, periodIndex) => (
-            <ParallaxSection
+            <div
               key={`${period.year}-${period.location}-${periodIndex}`}
+              className='pb-32'
+              id={`year-${period.year}-${periodIndex}`}
             >
-              <div
-                className='mb-16'
-                data-location={period.location}
-                style={{
-                  position: 'absolute',
-                  top: `${PERIOD_POSITIONS[periodIndex]}px`,
-                  width: '100%',
+              <motion.div
+                initial={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginBottom: 16,
+                  opacity: 0,
+                  y: -60,
                 }}
+                whileInView={{
+                  opacity: 1,
+                  transition: {
+                    delay: periodIndex * 0.2,
+                    duration: 0.5,
+                  },
+                  y: -40,
+                }}
+                viewport={{ amount: 0.8, once: true }}
               >
-                <div className='mb-8 flex items-center justify-center'>
-                  <motion.div
-                    initial={{ opacity: 0, y: -60 }}
-                    whileInView={{
-                      opacity: 1,
-                      transition: {
-                        delay: periodIndex * 0.2,
-                        duration: 0.5,
-                      },
-                      y: -40,
-                    }}
-                    viewport={{ amount: 0.8, once: true }}
-                  >
-                    <div
-                      className={`absolute left-1/2 z-10 -translate-x-1/2 transform bg-gradient-to-r ${cityColors[period.location]} px-4 py-2 text-center shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-105`}
-                      style={{
-                        clipPath: 'polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)',
-                        width: '150px',
-                      }}
-                    >
-                      <span className='font-mono text-lg font-bold text-white'>
-                        {period.year}
-                      </span>
-                    </div>
-                  </motion.div>
+                <div
+                  className={`${cityColors[period.location]} bg-gradient-to-r px-4 py-2 text-center shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-105`}
+                  style={{
+                    clipPath: 'polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)',
+                    width: '150px',
+                  }}
+                >
+                  <span className='font-mono text-lg font-bold text-white'>
+                    {period.year}
+                  </span>
                 </div>
+              </motion.div>
+
+              {/* Events */}
+              <div className='space-y-16'>
                 {period.events.map((event, eventIndex) => (
                   <TimelineEvent
                     key={`${event.date}-${event.title}`}
@@ -259,7 +197,7 @@ const Timeline: React.FC = () => {
                   />
                 ))}
               </div>
-            </ParallaxSection>
+            </div>
           ))}
         </div>
         <div className='absolute bottom-0 left-1/2 -translate-x-1/2 transform animate-bounce'>
@@ -424,16 +362,5 @@ const timelineData: TimelinePeriod[] = [
     year: 2020,
   },
 ];
-
-const PERIOD_POSITIONS = timelineData.reduce<Record<number, number>>(
-  (acc, period, index) => {
-    acc[index] =
-      index === 0
-        ? 0
-        : acc[index - 1] + calculatePeriodHeight(timelineData[index - 1]);
-    return acc;
-  },
-  {}
-);
 
 export default Timeline;
