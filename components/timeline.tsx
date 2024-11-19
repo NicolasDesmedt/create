@@ -10,8 +10,12 @@ import {
 import { ChevronDown } from 'lucide-react';
 import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 
-import InstagramEmbed from './instagram-embed';
+import dynamic from 'next/dynamic';
 import SpotifyEmbed from './podcast-embed';
+
+const InstagramEmbed = dynamic(() => import('./instagram-embed'), {
+  ssr: false,
+});
 
 interface TimelineEvent {
   date: string;
