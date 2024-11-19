@@ -6,7 +6,7 @@ import { RefObject, useEffect, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 import ImageGallery from './image-gallery';
-import MetaImageLink from './meta-image-link';
+import MediaPreviewDialog from './media-preview-dialog';
 import SpotifyEmbed from './podcast-embed';
 import YoutubeEmbed from './youtube-embed';
 
@@ -392,7 +392,7 @@ const timelineData: TimelinePeriod[] = [
       },
       {
         content: (
-          <MetaImageLink
+          <MediaPreviewDialog
             url='https://www.sciencedirect.com/science/article/pii/S221282712100531X#!'
             title='Paper: Active Preference Learning in Product Design Decisions'
             imageUrl='/create/active-preference-learning'
