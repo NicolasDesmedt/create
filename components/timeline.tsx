@@ -144,6 +144,10 @@ const Timeline: React.FC = () => {
     }
   };
 
+  const allEvents = timelineData.flatMap((period) =>
+    period.events.map((event) => ({ ...event, year: period.year }))
+  );
+
   return (
     <div className='relative min-h-screen bg-neutral-50/40'>
       <div className='container relative mx-auto overflow-hidden px-6 pt-10'>
@@ -178,7 +182,7 @@ const Timeline: React.FC = () => {
             <div
               key={`${period.year}-${periodIndex}`}
               className='pb-32'
-              id={`year-${period.year}-${periodIndex}`}
+              id={`year-${period.year}`}
             >
               <motion.div
                 initial={{
@@ -213,13 +217,18 @@ const Timeline: React.FC = () => {
               </motion.div>
 
               <div className='space-y-16'>
-                {period.events.map((event, eventIndex) => (
-                  <TimelineEvent
-                    key={`${event.date}-${event.title}`}
-                    event={event}
-                    isEven={(periodIndex + eventIndex) % 2 === 0}
-                  />
-                ))}
+                {period.events.map((event) => {
+                  const globalIndex = allEvents.findIndex(
+                    (e) => e.date === event.date && e.title === event.title
+                  );
+                  return (
+                    <TimelineEvent
+                      key={`${event.date}-${event.title}`}
+                      event={event}
+                      isEven={globalIndex % 2 === 0}
+                    />
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -374,7 +383,9 @@ const timelineData: TimelinePeriod[] = [
         title: 'Back to Belgium (but with a promise to return one day)',
       },
       {
-        content: 'Pictures placeholder',
+        content: (
+          <InstagramEmbed url='https://www.instagram.com/p/ChEqD3KD0yV/?utm_source=ig_embed&amp;utm_campaign=loading' />
+        ),
         date: '🗽 May',
         location: 'New York City',
         title: 'Moved to New York City for Business Development at Panenco',
