@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   description: `Nicolas Desmedt's portfolio website`,
-  title: 'Nicolas Desmedt || Software Engineer & People Enthusiast',
+  title: 'Nicolas Desmedt | Software Engineer at Whop & People Enthusiast',
 };
 
 export default function RootLayout({
