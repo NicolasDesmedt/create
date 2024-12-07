@@ -116,7 +116,7 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event, isEven }) => {
   );
 };
 
-const svgPath = createPath(9000);
+const svgPath = createPath(12000);
 
 const Timeline: React.FC = () => {
   const [isNavVisible, setIsNavVisible] = useState(false);
@@ -289,6 +289,37 @@ const Timeline: React.FC = () => {
 const timelineData: TimelinePeriod[] = [
   {
     events: [
+      {
+        content: (
+          <ImageGallery
+            images={[
+              {
+                alt: 'Whop Holiday Party',
+                src: 'create/whop-holiday-party',
+              },
+            ]}
+          />
+        ),
+        date: '🗽 December',
+        location: 'New York City',
+        title:
+          'JOINED WHOP! Enabling everyone to thrive in the internet economy 🚀',
+      },
+      {
+        content: (
+          <ImageGallery
+            images={[
+              {
+                alt: 'O1 visa',
+                src: 'create/o1-visa',
+              },
+            ]}
+          />
+        ),
+        date: '🇧🇪 November',
+        location: 'Belgium',
+        title: 'To grow beyond borders: I got my O1 visa!',
+      },
       {
         content: 'Embedded video podcast placeholder',
         date: '🇵🇹 October',
