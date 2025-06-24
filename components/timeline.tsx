@@ -285,7 +285,7 @@ const Timeline: React.FC = () => {
   );
 };
 
-// Update timelineData type
+// Timeline events grouped by year
 const timelineData: TimelinePeriod[] = [
   {
     events: [
